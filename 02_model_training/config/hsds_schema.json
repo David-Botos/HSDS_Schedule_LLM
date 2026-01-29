@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "properties": {
+    "original_text": {
+      "type": "string",
+      "description": "The original unstructured schedule text"
+    },
+    "parsed_schedule": {
+      "type": "array",
+      "description": "Array of schedule objects (one or more time periods)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "opens_at": {
+            "type": ["string", "null"],
+            "pattern": "^([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$",
+            "description": "Opening time in HH:MM:SS format"
+          },
+          "closes_at": {
+            "type": ["string", "null"],
+            "pattern": "^(([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]|24:00:00)$",
+            "description": "Closing time in HH:MM:SS format"
+          },
+          "until": {
+            "type": ["string", "null"],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "iCal - The date of the last occurrence of the recurring event."
+          },
+          "valid_from": {
+            "type": ["string", "null"],
+            "description": "The date from which the schedule information is valid. It must be in the ISO 8601 format of YYYY-MM-DD."
+          },
+          "valid_to": {
+            "type": ["string", "null"],
+            "description": "The last date on which the schedule information is valid. It must be in the ISO 8601 format of YYYY-MM-DD."
+          },
+          "timezone": {
+            "type": ["integer", "string", "null"],
+            "description": "The timezone that all dates are expressed as, expressed as a UTC offset. Dates are assumed to be UTC."
+          },
+          "count": {
+            "type": ["integer", "null"],
+            "description": "iCal - The number of times that the event occurs. Use this instead of ‘until’, if appropriate."
+          },
+          "wkst": {
+            "type": ["string", "null"],
+            "description": "iCal - The two-letter code for the day on which the week starts: MO, TU, WE, TH, FR, SA, SU."
+          },
+          "freq": {
+            "type": ["string", "null"],
+            "enum": ["DAILY", "WEEKLY", "MONTHLY", "YEARLY", null],
+            "description": "iCal - How often the frequency repeats. Values can be WEEKLY or MONTHLY."
+          },
+          "interval": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "description": "iCal - How often the frequency repeats. For example, and Interval of 2 for a WEEKLY Frequency would mean every other week."
+          },
+          "byday": {
+            "type": ["string", "null"],
+            "description": "iCal - Comma separated days of the week. Where freq is MONTHLY each part can be preceded by a positive or negative integer to represent the Nth occurrence."
+          },
+          "byweekno": {
+            "type": ["string", "null"],
+             "description": "iCal - Comma separated numeric weeks of the year, where freq is WEEKLY. Can be negative to represent counting from the end of the year."
+          },
+          "bymonthday": {
+            "type": ["string", "null"],
+            "description": "iCal - Comma separated numeric days of the month, where frequency is MONTHLY. Can be negative to represent counting from the end of the month."
+          },
+          "byyearday": {
+            "type": ["string", "null"],
+            "description": "iCal - Comma separated numeric days of the year, where frequency is YEARLY. Can be negative to represent counting from the end of the year."
+          },
+          "schedule_link": {
+            "type": ["string", "null"],
+             "description": "URL of a link for the schedule which may show each individual session and may provide a booking facility."
+          },
+          "attending_type": {
+            "type": ["string", "null"],
+             "description": "A free text description of how to attend this service."
+          },
+          "notes": {
+            "type": ["string", "null"],
+            "description": "Free text notes on the schedule."
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  "required": ["original_text", "parsed_schedule"]
+}

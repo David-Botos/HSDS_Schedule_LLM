@@ -1,0 +1,9 @@
+.env
+*.jsonl
+02_model_training/data/analysis/*.json
+02_model_training/base_model/*
+!02_model_training/base_model/.gitkeep
+01_training_data_generation/source_data/*
+!01_training_data_generation/source_data/.gitkeep
+__pycache__
+baml_client

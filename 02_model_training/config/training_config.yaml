@@ -1,0 +1,63 @@
+# Base configuration for all experiments
+model:
+  base_model: "base_model"
+  model_type: "qwen3"
+  
+training:
+  method: "lora"  # Parameter-efficient fine-tuning
+  
+  lora:
+    r: 16                    # LoRA rank
+    lora_alpha: 32
+    lora_dropout: 0.05
+    target_modules:
+      - q_proj
+      - k_proj
+      - v_proj
+      - o_proj
+      - gate_proj
+      - up_proj
+      - down_proj
+    bias: "none"
+  
+  hyperparameters:
+    learning_rate: 2e-4
+    batch_size: 4
+    gradient_accumulation_steps: 4  # Effective batch = 16
+    num_epochs: 5
+    # max_steps: 100 # Uncomment to limit steps for a "Mini-Production" run (overrides num_epochs)
+    warmup_steps: 100
+    weight_decay: 0.01
+    max_grad_norm: 1.0
+    
+  scheduler:
+    type: "linear"
+    
+  optimizer:
+    type: "adamw"
+    
+  mixed_precision: "fp16"
+  gradient_checkpointing: true  # Save memory
+  
+  early_stopping:
+    enabled: true
+    patience: 2
+    monitor: "val_loss"
+    
+data:
+  train_file: "data/processed/finetune_formatted/train_from_01.28.08:49:29.jsonl"
+  val_file: "data/processed/finetune_formatted/val_from_01.28.08:49:29.jsonl"
+  test_file: "data/processed/finetune_formatted/test_from_01.28.08:49:29.jsonl"
+  max_seq_length: 2048  # Long enough for arrays
+  
+logging:
+  output_dir: "experiments/{experiment_name}"
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 500
+  save_total_limit: 3
+  
+evaluation:
+  eval_strategy: "steps"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
